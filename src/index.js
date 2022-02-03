@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const movies = require("./data/movies")
+const movies = require("./data/movies");
 
 // create and config server
 const server = express();
@@ -18,12 +18,21 @@ server.get("/movies", (req, res) => {
   const genderFilterParam = req.query.gender;
   const response = {
     success: true,
-    movies: movies
+    movies: movies,
   };
   const filteredMovies = {
     success: true,
-    movies: response.movies.filter(movie => movie.gender === genderFilterParam)
+    movies: response.movies.filter(
+      (movie) => movie.gender === genderFilterParam
+    ),
   };
   console.log(filteredMovies);
   res.json(filteredMovies);
 });
+
+// servidor de estáticos
+const staticServerPath = "./src/public-react";
+server.use(express.static(staticServerPath));
+
+const staticServerPhotos = "./src/public-movies-images";
+server.use(express.static(staticServerPhotos));
