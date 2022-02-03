@@ -15,22 +15,15 @@ server.listen(serverPort, () => {
 
 // Escribimos los endpoints
 server.get("/movies", (req, res) => {
+  const genderFilterParam = req.query.gender;
   const response = {
     success: true,
-    movies: movies /* [
-      {
-        id: "1",
-        title: "Gambita de dama",
-        gender: "Drama",
-        image: "https://via.placeholder.com/150",
-      },
-      {
-        id: "2",
-        title: "Friends",
-        gender: "Comedia",
-        image: "https://via.placeholder.com/150",
-      },
-    ], */
+    movies: movies
   };
-  res.json(response);
+  const filteredMovies = {
+    success: true,
+    movies: response.movies.filter(movie => movie.gender === genderFilterParam)
+  };
+  console.log(filteredMovies);
+  res.json(filteredMovies);
 });
