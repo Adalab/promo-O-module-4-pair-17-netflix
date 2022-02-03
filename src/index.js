@@ -27,7 +27,7 @@ server.get("/movies", (req, res) => {
     ),
   };
   console.log(filteredMovies);
-  res.json(filteredMovies);
+  res.json(genderFilterParam === '' ? response : filteredMovies);
 });
 
 // servidor de estáticos

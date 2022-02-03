@@ -33,13 +33,13 @@ Por favor marca a continuación los ejericios que hayais terminado:
 4.2 Express JS I:
 
 - [X] 1. Pedir todas las películas
-- [ ] 2. Filtrar por género
+- [X] 2. Filtrar por género
 - [ ] 3. Ordenar por nombre
 
 4.3 Express JS II:
 
-- [ ] 1. Servidor de estáticos para React
-- [ ] 2. Servidor de estáticos para las fotos
+- [X] 1. Servidor de estáticos para React
+- [X] 2. Servidor de estáticos para las fotos
 - [ ] 3. Peticiones POST con body params
 - [ ] 4. Mantener logada a la usuaria
 
