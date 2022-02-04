@@ -6,6 +6,7 @@ const movies = require("./data/movies");
 const server = express();
 server.use(cors());
 server.use(express.json());
+server.set('view engine', 'ejs');
 
 // init express aplication
 const serverPort = 4000;
@@ -30,9 +31,20 @@ server.get("/movies", (req, res) => {
   res.json(genderFilterParam === '' ? response : filteredMovies);
 });
 
+server.get('/movie/:movieId', (req, res) => {
+  console.log(req.params.movieId);
+  const requestMovieId = req.params.movieId;
+  const foundMovie = movies.find(movie => movie.id === requestMovieId);
+  console.log(foundMovie);
+  res.render('movie', foundMovie);
+});
+
 // servidor de estáticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
 
 const staticServerPhotos = "./src/public-movies-images";
 server.use(express.static(staticServerPhotos));
+
+const staticServerMovie = "./views/movie";
+server.use(express.static(staticServerMovie));
