@@ -1,9 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-//const movies = require("./data/movies");
+const movies = require("./data/movies");
 const Database = require("better-sqlite3");
-
-const db = new Database("./src/db/database.db", { verbose: console.log });
 
 // create and config server
 const server = express();
@@ -17,16 +15,28 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+// init and config data base
+const db = new Database("./src/db/database.db", {
+  verbose: console.log,
+});
+
 // Escribimos los endpoints
 server.get("/movies", (req, res) => {
-  const genderFilterParam = req.query.gender;
-  const query = db.prepare("SELECT*FROM movies WHERE gender= ?");
-  const moviesFiltered = query.all(genderFilterParam);
+  //const genderFilterParam = req.query.gender;
 
-  const query2 = db.prepare("SELECT*FROM movies");
-  const allMovies = query2.all();
+  const query = db.prepare("SELECT*FROM movies");
+  const allMovies = query.all();
+  const response = {
+    success: true,
+    movies: allMovies,
+  };
 
-  res.json(genderFilterParam === "" ? allMovies : moviesFiltered);
+  res.json(response);
+
+  //const query2 = db.prepare("SELECT*FROM movies WHERE gender= ?");
+  //const moviesFiltered = query2.all(genderFilterParam);
+
+  //res.json(genderFilterParam === "" ? allMovies : moviesFiltered);
 
   /*const response = {
     success: true,
