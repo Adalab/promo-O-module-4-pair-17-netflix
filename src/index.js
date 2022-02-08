@@ -14,37 +14,29 @@ const serverPort = 4000;
 server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
-const db = new Database("./src/db/database.db", { verbose: console.log, });
+const db = new Database("./src/db/database.db", { verbose: console.log });
 
 // Escribimos los endpoints
 server.get("/movies", (req, res) => {
-
   const genderFilterParam = req.query.gender;
 
-  if(genderFilterParam === ''){
+  if (genderFilterParam === "") {
     const queryAllMovies = db.prepare("SELECT * FROM movies");
     const allMovies = queryAllMovies.all();
     return res.json({
       success: true,
       movies: allMovies,
-    })
-  }else{
-    const queryFilterGender = db.prepare("SELECT * FROM movies WHERE gender = ?");
+    });
+  } else {
+    const queryFilterGender = db.prepare(
+      "SELECT * FROM movies WHERE gender = ?"
+    );
     const moviesFiltered = queryFilterGender.all(genderFilterParam);
     return res.json({
       success: true,
       movies: moviesFiltered,
-    })
+    });
   }
-
-/*   const queryAllMovies = db.prepare("SELECT * FROM movies");
-  const allMovies = queryAllMovies.all(); 
-  console.log(allMovies);
-  const queryFilterGender = db.prepare("SELECT * FROM movies WHERE gender = ?");
-  const moviesFiltered = queryFilterGender.all(genderFilterParam);
-  console.log(moviesFiltered);
-  res.json(genderFilterParam === "" ? allMovies : moviesFiltered); */
-
 
   /*const response = {
     success: true,
@@ -68,14 +60,45 @@ server.get("/movie/:movieId", (req, res) => {
   res.render("movie", foundMovie);
 });
 
+server.post("/login", (req, res) => {
+  const query = db.prepare(
+    "SELECT * FROM users WHERE email = ? AND password = ?"
+  );
+  const foundUser = query.get(req.body.email, req.body.password);
+  if (foundUser) {
+    res.json({
+      success: true,
+      userId: foundUser.id,
+    });
+  } else {
+    res.json({
+      success: false,
+      errorMessage: "Usuaria no encontrada",
+    });
+  }
+});
+
 server.post("/sign-up", (req, res) => {
-  const email = rep.body.email;
-  const pass = req.body.password;
+  const query = db.prepare("SELECT * FROM users WHERE email = ?");
+  const foundUser = query.get(req.body.email);
 
-  const query 
-
-  INSERT INTO users (email, password) VALUES ("sandsan12@gmail.com" , "12345678")
-})
+  if (foundUser) {
+    res.json({
+      success: false,
+      errorMessage: "Usuaria ya existente",
+    });
+  } else {
+    const query = db.prepare(
+      "INSERT INTO users (email, password) VALUES (?, ?)"
+    );
+    const result = query.run(req.body.email, req.body.password);
+    console.log(result);
+    res.json({
+      success: true,
+      idUser: result.lastInsertRowid,
+    });
+  }
+});
 
 // servidor de estáticos
 const staticServerPath = "./src/public-react";
