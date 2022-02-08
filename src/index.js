@@ -68,6 +68,15 @@ server.get("/movie/:movieId", (req, res) => {
   res.render("movie", foundMovie);
 });
 
+server.post("/sign-up", (req, res) => {
+  const email = rep.body.email;
+  const pass = req.body.password;
+
+  const query 
+
+  INSERT INTO users (email, password) VALUES ("sandsan12@gmail.com" , "12345678")
+})
+
 // servidor de estáticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
