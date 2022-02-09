@@ -100,6 +100,21 @@ server.post("/sign-up", (req, res) => {
   }
 });
 
+server.get("/user/movies", (req, res) => {
+  //const idUser = req.header.userId;
+
+  const movieIdsQuery = query.prepare(
+    "SELECT movieId FROM rel_movies_users WHERE userId = ?"
+  );
+  const movieIds = movieIdsQuery.all(req.header("user-id"));
+  console.log(movieIds);
+
+  res.json({
+    success: true,
+    movies: [],
+  });
+});
+
 // servidor de estáticos
 const staticServerPath = "./src/public-react";
 server.use(express.static(staticServerPath));
