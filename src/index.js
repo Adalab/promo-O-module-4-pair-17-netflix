@@ -101,9 +101,8 @@ server.post("/sign-up", (req, res) => {
 });
 
 server.get("/user/movies", (req, res) => {
-  //const idUser = req.header.userId;
-
-  const movieIdsQuery = query.prepare(
+  console.log(req.header("user-id"));
+  const movieIdsQuery = db.prepare(
     "SELECT movieId FROM rel_movies_users WHERE userId = ?"
   );
   const movieIds = movieIdsQuery.all(req.header("user-id"));

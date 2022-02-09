@@ -71,11 +71,13 @@ const getUserMoviesFromApi = (userId) => {
   return fetch("//localhost:4000/user/movies", {
     method: "GET",
     headers: {
-      "user-id: "user-id",
+      "Content-Type": "application/json",
+      "user-id": userId,
     },
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
       return data;
     });
 };
